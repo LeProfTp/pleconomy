@@ -651,9 +651,10 @@ async function askAI(){
   const loading=document.getElementById('ai-loading'),resp=document.getElementById('ai-response'),rt=document.getElementById('ai-response-text');
   loading.classList.add('show');resp.classList.remove('show');
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:'Du bist ein spezialisierter Assistent für Plattformökonomie, Web3 und Token-Design. Antworte auf Deutsch, präzise, akademisch fundiert, auf Bachelor/Master-Niveau. Halte Antworten auf 150–250 Wörter. Verwende konkrete Beispiele. Erwähne bei wissenschaftlichen Konzepten kurz die Quelle (Autor, Jahr). Schreibe in fließenden Absätzen, kein Markdown.',messages:[{role:'user',content:q}]})});
+    const res=await fetch('/.netlify/functions/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
     const data=await res.json();
-    rt.textContent=data.content?.map(b=>b.text||'').join('')||'Keine Antwort erhalten.';
+    if(data.error){rt.textContent=data.error;}
+    else{rt.textContent=data.answer||'Keine Antwort erhalten.';}
     resp.classList.add('show');
   }catch(e){rt.textContent='Fehler bei der Anfrage. Bitte versuche es erneut.';resp.classList.add('show');}
   finally{loading.classList.remove('show');}
