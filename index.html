@@ -651,7 +651,7 @@ async function askAI(){
   const loading=document.getElementById('ai-loading'),resp=document.getElementById('ai-response'),rt=document.getElementById('ai-response-text');
   loading.classList.add('show');resp.classList.remove('show');
   try{
-    const res=await fetch('/.netlify/functions/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
+    const res=await fetch('https://lustrous-naiad-c88b62.netlify.app/.netlify/functions/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})});
     const data=await res.json();
     if(data.error){rt.textContent=data.error;}
     else{rt.textContent=data.answer||'Keine Antwort erhalten.';}
